@@ -1,0 +1,17 @@
+<lifecycles>
+  <lifecycle>
+    <id>crowbar</id>
+    <phases>
+      <phase>
+        <id>initialize</id>
+        <executions>
+          <execution>
+            <goals>
+              <goal>init</goal>
+            </goals>
+          </execution>
+        </executions>
+      </phase>
+    </phases>
+  </lifecycle>
+</lifecycles>
