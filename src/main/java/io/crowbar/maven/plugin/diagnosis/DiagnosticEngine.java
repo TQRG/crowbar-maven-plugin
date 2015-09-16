@@ -20,7 +20,6 @@ import io.crowbar.diagnostic.spectrum.matchers.NegateMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.ProbeTypeMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.SuspiciousProbeMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.TestProbesMatcher;
-import io.crowbar.diagnostic.spectrum.matchers.ValidTransactionMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.tree.FunctionGranularityMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.tree.TestNodesMatcher;
 import io.crowbar.instrumentation.passes.InjectPass.Granularity;
@@ -48,7 +47,10 @@ public class DiagnosticEngine {
 
 		switch(configs.getAlgorithm()) {
 		case FUZZINEL:
-			j.addGenerator(new MHSGenerator());
+			MHSGenerator generator = new MHSGenerator();
+			generator.setMaxCandidates(configs.getMaxCandidates());
+			
+			j.addGenerator(generator);
 			j.addRanker(new FuzzinelRanker());            
 			con = j.addConnection(0, 0);
 			break;
@@ -61,7 +63,6 @@ public class DiagnosticEngine {
 			break;
 		}
 		DiagnosticSystem ds = j.create();
-
 
 		try {
 			JNARunner runner = new JNARunner();
@@ -80,12 +81,15 @@ public class DiagnosticEngine {
 			if (configs.getGranularity() == Granularity.FUNCTION) {
 				tvf.addStage(new FunctionGranularityMatcher());
 			}
+			List<int[]> freqs = spectrumView.getFreqsPerNode();
+			
 			TreeView n = tvf.getView();
-
 			scores = n.updateScores(scores);
-
-
-			String jsonRequest = io.crowbar.messages.Messages.serialize(VisualizationMessages.issueRequest(n,scores));
+			freqs = n.updateFreqs(freqs);
+			
+			
+			
+			String jsonRequest = io.crowbar.messages.Messages.serialize(VisualizationMessages.issueRequest(n,scores,freqs));
 
 			return jsonRequest;
 		}
@@ -101,7 +105,7 @@ public class DiagnosticEngine {
 		svf.addStage(new ProbeTypeMatcher(ProbeType.HIT_PROBE));
 		svf.addStage(new ActiveProbeMatcher());
 		svf.addStage(new SuspiciousProbeMatcher());
-		svf.addStage(new ValidTransactionMatcher()); 
+		//svf.addStage(new ValidTransactionMatcher()); 
 		return svf.getView();
 	}
 }

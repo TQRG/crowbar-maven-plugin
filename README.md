@@ -1,9 +1,16 @@
 # Crowbar maven plugin
 
 Crowbar plugin for maven projects.
-Runs test cases via surefire, so it supports both JUnit3/4 and TestNG.
+It runs test cases via [Surefire](https://maven.apache.org/surefire/maven-surefire-plugin/), so it supports both JUnit3 and Junit4.
 
-As of this moment, it generates a JSON file with the diagnostic report for each submodule.
+As of this moment, it generates a tree visualization with the diagnostic report for each module in a project.
+
+## Compilation and Installation
+
+To compile the project and install it in your local maven repository, simply run the command:
+```
+mvn install
+```
 
 ## Usage
 
@@ -34,9 +41,9 @@ By default, `crowbar-maven-plugin` creates an internal `InstrumentationServer`. 
         <groupId>io.crowbar</groupId>
         <artifactId>crowbar-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <configurations>
+        <configuration>
           <port>1234</port>
-        </configurations>
+        </configuration>
       </plugin>
     </plugins>
   </pluginManagement>
@@ -49,9 +56,14 @@ Statement granularity (default is `false`):
 <statementGranularity>true</statementGranularity>
 ```
 
-Enable fuzzinel (default is `false`):
+Enable barinel (default is `false`):
 ```
-<fuzzinel>true</fuzzinel>
+<barinel>true</barinel>
+```
+
+Set the maximum number of diagnostic candidates to be considered (default is `5000`):
+```
+<maxCandidates>10000</maxCandidates>
 ```
 
 Report directory (default is `${project.build.directory}/crowbar-report`):

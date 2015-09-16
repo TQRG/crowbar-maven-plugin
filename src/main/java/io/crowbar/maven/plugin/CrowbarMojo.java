@@ -3,6 +3,7 @@ package io.crowbar.maven.plugin;
 import io.crowbar.diagnostic.spectrum.Spectrum;
 import io.crowbar.maven.plugin.configs.PluginConfigs;
 import io.crowbar.maven.plugin.diagnosis.DiagnosticEngine;
+import io.crowbar.maven.plugin.reporting.ReportGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,16 @@ public class CrowbarMojo extends AbstractCrowbarMojo {
 			
 			if(spectrum != null) {				
 				String diagnosis = diagnosticEngine.diagnose(spectrum);
-				writeReport(diagnosis);
+				//writeReport(diagnosis);
+				
+				try {
+					ReportGenerator rp = new ReportGenerator(diagnosis);
+					rp.generate(reportDirectory);
+					getLog().info("Generated report: " + reportDirectory.getAbsolutePath());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 			}
 		}
 		

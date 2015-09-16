@@ -32,6 +32,12 @@ public abstract class AbstractCrowbarMojo extends AbstractMojo {
 	@Parameter(defaultValue = "false")
 	protected boolean fuzzinel;
 	
+	@Parameter(defaultValue = "false")
+	protected boolean barinel;
+	
+	@Parameter(defaultValue = "5000")
+	protected int maxCandidates;
+	
 	@Parameter(defaultValue = "${project.build.directory}/crowbar-report")
 	protected File reportDirectory;
 	
@@ -80,5 +86,13 @@ public abstract class AbstractCrowbarMojo extends AbstractMojo {
 	
 	public boolean isFuzzinel() {
 		return fuzzinel;
+	}
+
+	public boolean isBarinel() {
+		return barinel;
+	}
+
+	public int getMaxCandidates() {
+		return maxCandidates;
 	}
 }

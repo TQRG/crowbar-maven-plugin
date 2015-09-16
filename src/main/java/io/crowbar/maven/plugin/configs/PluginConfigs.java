@@ -12,6 +12,7 @@ public class PluginConfigs extends AgentConfigs {
 	
 	private Algorithm algorithm = Algorithm.SIMILARITY;
 	private SimilarityRanker.Type similarityType = SimilarityRanker.Type.OCHIAI;
+	private int maxCandidates = 5000;
 	
 	
 	public PluginConfigs(AbstractCrowbarMojo crowbarMojo) {
@@ -27,7 +28,10 @@ public class PluginConfigs extends AgentConfigs {
 		setPort(port);
 		setGranularity(crowbarMojo.isStatementGranularity() ? Granularity.STATEMENT : Granularity.FUNCTION);
 		
-		this.algorithm = crowbarMojo.isFuzzinel() ? Algorithm.FUZZINEL : Algorithm.SIMILARITY;
+		this.algorithm = crowbarMojo.isFuzzinel() || crowbarMojo.isBarinel() 
+				? Algorithm.FUZZINEL : Algorithm.SIMILARITY;
+		
+		maxCandidates = crowbarMojo.getMaxCandidates();
 	}
 
 	public Algorithm getAlgorithm() {
@@ -36,5 +40,9 @@ public class PluginConfigs extends AgentConfigs {
 	
 	public SimilarityRanker.Type getSimilarityType() {
 		return similarityType;
+	}
+	
+	public int getMaxCandidates() {
+		return maxCandidates;
 	}
 }
