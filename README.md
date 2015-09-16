@@ -23,6 +23,9 @@ Add the following to your `pom.xml`:
         <groupId>io.crowbar</groupId>
         <artifactId>crowbar-maven-plugin</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <barinel>true</barinel>
+        </configuration>
       </plugin>
     </plugins>
   </pluginManagement>
