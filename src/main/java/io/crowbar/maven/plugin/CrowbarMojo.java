@@ -19,8 +19,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 @Execute(lifecycle = "crowbar", phase = LifecyclePhase.TEST)
 public class CrowbarMojo extends AbstractCrowbarMojo {
 	
-	private static final String REPORT_FILENAME = "report.json";
-	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		if(shouldInstrument() && isOwnServer()) {
 			getLog().info("Diagnosing...");
@@ -30,7 +28,7 @@ public class CrowbarMojo extends AbstractCrowbarMojo {
 			Spectrum spectrum = retrieveCurrentSpectrum();
 			
 			if(spectrum != null) {				
-				String diagnosis = diagnosticEngine.diagnose(spectrum);
+				String[] diagnosis = diagnosticEngine.diagnose(spectrum);
 				//writeReport(diagnosis);
 				
 				try {
@@ -44,20 +42,6 @@ public class CrowbarMojo extends AbstractCrowbarMojo {
 			}
 		}
 		
-	}
-
-	private void writeReport(String diagnosis) {
-		reportDirectory.mkdirs();
-		File f = new File(reportDirectory, REPORT_FILENAME);
-		try {
-			f.createNewFile();
-			PrintWriter writer = new PrintWriter(f);
-			writer.println(diagnosis);
-			writer.close();
-			getLog().info("Generated report: " + f.getAbsolutePath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

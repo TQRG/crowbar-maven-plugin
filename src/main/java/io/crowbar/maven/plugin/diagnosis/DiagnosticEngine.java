@@ -10,6 +10,7 @@ import io.crowbar.diagnostic.algorithms.MHSGenerator;
 import io.crowbar.diagnostic.algorithms.SimilarityRanker;
 import io.crowbar.diagnostic.algorithms.SingleFaultGenerator;
 import io.crowbar.diagnostic.runners.JNARunner;
+import io.crowbar.diagnostic.spectrum.Node;
 import io.crowbar.diagnostic.spectrum.ProbeType;
 import io.crowbar.diagnostic.spectrum.Spectrum;
 import io.crowbar.diagnostic.spectrum.SpectrumViewFactory;
@@ -38,7 +39,7 @@ public class DiagnosticEngine {
 		this.configs = configs;
 	}
 
-	public String diagnose(Spectrum spectrum) {
+	public String[] diagnose(Spectrum spectrum) {
 
 		final Spectrum spectrumView = getSpectrumView(spectrum);
 
@@ -87,11 +88,27 @@ public class DiagnosticEngine {
 			scores = n.updateScores(scores);
 			freqs = n.updateFreqs(freqs);
 			
-			
+			StringBuilder report = new StringBuilder();
+			List<Node> treeNodes = n.getNodes();
+			for (int i = 0; i < scores.size(); i++) {
+				Node node = treeNodes.get(i);
+				double score = scores.get(i);
+				if (score < 0d) {
+					score = 0d;
+				}
+				
+				if (node.getChildren() == null || node.getChildren().isEmpty()) { //terminal node
+					report.append(node.getFullName(".", 1));
+					report.append('\t');
+					report.append(score);
+					report.append('\n');
+				}
+			}
+			String reportString = report.toString();
 			
 			String jsonRequest = io.crowbar.messages.Messages.serialize(VisualizationMessages.issueRequest(n,scores,freqs));
 
-			return jsonRequest;
+			return new String[] {jsonRequest, reportString};
 		}
 		catch (Throwable e) {e.printStackTrace();}
 
