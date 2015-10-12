@@ -79,6 +79,14 @@ Add arbitrary JVM options to set on the command line:
 <argLine>-Xmx512m</argLine>
 ```
 
+Restrict classes allowed for instrumentation:
+```
+<classesToInstrument>
+  <class>fully.qualified.ClassName</class>
+  <class>fully.qualified.ClassName2</class>
+</classesToInstrument>
+```
+
 ## Caveats
 If the `argLine` parameter is set in the declaration of `maven-surefire-plugin`, it will override crowbar's request to add an agent to the test JVM. 
 To circumvent this, you can add your JVM options in crowbar's `argLine` parameter.

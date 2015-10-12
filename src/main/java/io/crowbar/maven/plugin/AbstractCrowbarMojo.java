@@ -3,6 +3,7 @@ package io.crowbar.maven.plugin;
 import io.crowbar.diagnostic.spectrum.Spectrum;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.maven.artifact.Artifact;
@@ -40,6 +41,9 @@ public abstract class AbstractCrowbarMojo extends AbstractMojo {
 	
 	@Parameter(defaultValue = "${project.build.directory}/crowbar-report")
 	protected File reportDirectory;
+	
+	@Parameter
+	protected List<String> classesToInstrument;
 	
 	AbstractCrowbarMojo() {
 	}

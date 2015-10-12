@@ -19,6 +19,7 @@ public class InitializeCrowbarMojo extends AbstractCrowbarMojo {
 			
 			String agentFilename = getArtifact(CROWBAR_ARTIFACT).getFile().getAbsolutePath();
 			PluginConfigs agentConfigs = new PluginConfigs(this);
+			agentConfigs.setClassesToInstrument(classesToInstrument);
 			setAgent(agentFilename, agentConfigs);
 		}
 	}
