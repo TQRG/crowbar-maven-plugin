@@ -36,7 +36,7 @@ public abstract class AbstractCrowbarMojo extends AbstractMojo {
 	@Parameter(defaultValue = "false")
 	protected boolean barinel;
 	
-	@Parameter(defaultValue = "5000")
+	@Parameter(defaultValue = "2000")
 	protected int maxCandidates;
 	
 	@Parameter(defaultValue = "${project.build.directory}/crowbar-report")

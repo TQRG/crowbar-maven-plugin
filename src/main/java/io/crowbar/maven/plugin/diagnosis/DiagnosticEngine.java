@@ -21,6 +21,7 @@ import io.crowbar.diagnostic.spectrum.matchers.NegateMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.ProbeTypeMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.SuspiciousProbeMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.TestProbesMatcher;
+import io.crowbar.diagnostic.spectrum.matchers.ValidTransactionMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.tree.FunctionGranularityMatcher;
 import io.crowbar.diagnostic.spectrum.matchers.tree.TestNodesMatcher;
 import io.crowbar.instrumentation.passes.InjectPass.Granularity;
@@ -29,6 +30,8 @@ import io.crowbar.maven.plugin.configs.PluginConfigs;
 import io.crowbar.messages.VisualizationMessages;
 import io.crowbar.util.MergeStrategy;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class DiagnosticEngine {
@@ -90,19 +93,32 @@ public class DiagnosticEngine {
 			
 			StringBuilder report = new StringBuilder();
 			List<Node> treeNodes = n.getNodes();
+			
+			List<NodeScore> nodeScores = new ArrayList<NodeScore>();
 			for (int i = 0; i < scores.size(); i++) {
 				Node node = treeNodes.get(i);
 				double score = scores.get(i);
-				if (score < 0d) {
-					score = 0d;
-				}
 				
 				if (node.getChildren() == null || node.getChildren().isEmpty()) { //terminal node
-					report.append(node.getFullName(".", 1));
-					report.append('\t');
-					report.append(score);
-					report.append('\n');
+					nodeScores.add(new NodeScore(node, score));
 				}
+			}
+			
+			nodeScores.sort(new Comparator<NodeScore>() {
+				public int compare(NodeScore o1, NodeScore o2) {
+					if (o1.score == o2.score)
+						return 0;
+					else if (o1.score < o2.score)
+						return 1;
+					else
+						return -1;
+				}
+			});
+			
+			
+			for(NodeScore ns : nodeScores) {
+				report.append(ns);
+				report.append('\n');
 			}
 			String reportString = report.toString();
 			
@@ -122,7 +138,24 @@ public class DiagnosticEngine {
 		svf.addStage(new ProbeTypeMatcher(ProbeType.HIT_PROBE));
 		svf.addStage(new ActiveProbeMatcher());
 		svf.addStage(new SuspiciousProbeMatcher());
-		//svf.addStage(new ValidTransactionMatcher()); 
+		svf.addStage(new ValidTransactionMatcher()); 
 		return svf.getView();
+	}
+	
+	private class NodeScore {
+		public final Node node;
+		public final double score;
+		
+		public NodeScore(Node node, double score) {
+			if (score < 0d) {
+				score = 0d;
+			}
+			this.score = score;
+			this.node = node;
+		}
+		
+		public String toString() {
+			return node.getFullName(".", 1) + "\t" + score;
+		}
 	}
 }

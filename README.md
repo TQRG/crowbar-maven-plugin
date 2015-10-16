@@ -64,7 +64,7 @@ Enable barinel (default is `false`):
 <barinel>true</barinel>
 ```
 
-Set the maximum number of diagnostic candidates to be considered (default is `5000`):
+Set the maximum number of diagnostic candidates to be considered (default is `2000`):
 ```
 <maxCandidates>10000</maxCandidates>
 ```
