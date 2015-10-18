@@ -22,7 +22,7 @@ Add the following to your `pom.xml`:
       <plugin>
         <groupId>io.crowbar</groupId>
         <artifactId>crowbar-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
         <configuration>
           <barinel>true</barinel>
         </configuration>
@@ -43,7 +43,7 @@ By default, `crowbar-maven-plugin` creates an internal `InstrumentationServer`. 
       <plugin>
         <groupId>io.crowbar</groupId>
         <artifactId>crowbar-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
         <configuration>
           <port>1234</port>
         </configuration>
