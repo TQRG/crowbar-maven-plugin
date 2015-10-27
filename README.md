@@ -105,3 +105,7 @@ If the `argLine` parameter is set in the declaration of `maven-surefire-plugin`,
 To circumvent this, you can add your JVM options in crowbar's `argLine` parameter.
 
 The [`ExpectedException`](http://junit.org/apidocs/org/junit/rules/ExpectedException.html) `@Rule` for Junit4 is not currently supported.
+
+## License
+
+Distributed under the GNU LESSER GENERAL PUBLIC LICENSE - see LICENSE.txt for further details.
