@@ -3,7 +3,20 @@
 Crowbar plugin for maven projects.
 It runs test cases via [Surefire](https://maven.apache.org/surefire/maven-surefire-plugin/), so it supports both JUnit3 and Junit4.
 
-As of this moment, it generates a tree visualization with the diagnostic report for each module in a project.
+As of this moment, it generates a plaintext list of ranked components and a tree visualization with the diagnostic report for each module in a project.
+
+## Dependencies
+
+Crowbar's internals depend on:
+
+* Boost 1.55
+* MPFR 3.1.2
+* GMP 6.0
+
+On OSX, you can install the dependencies by running the following command:
+```
+brew install boost mpfr gmp
+```
 
 ## Compilation and Installation
 
