@@ -31,6 +31,7 @@ import io.crowbar.messages.VisualizationMessages;
 import io.crowbar.util.MergeStrategy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -104,7 +105,7 @@ public class DiagnosticEngine {
 				}
 			}
 			
-			nodeScores.sort(new Comparator<NodeScore>() {
+			Collections.sort(nodeScores, new Comparator<NodeScore>() {
 				public int compare(NodeScore o1, NodeScore o2) {
 					if (o1.score == o2.score)
 						return 0;
